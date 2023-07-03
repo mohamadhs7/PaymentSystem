@@ -11,6 +11,4 @@ public interface DepositRepository extends JpaRepository<Deposit, Long> {
     Deposit getDepositByNumber(String depositNumber);
     Deposit getDepositByCardPan(String cardPan);
 
-
-
 }

@@ -1,7 +1,7 @@
 package com.example.paymentsystem.valueobjects;
 
 import com.example.paymentsystem.model.PaymentTransaction;
-import com.example.paymentsystem.model.TransactionStateEnum;
+import com.example.paymentsystem.model.enums.TransactionStateEnum;
 import lombok.Data;
 
 import java.io.Serializable;

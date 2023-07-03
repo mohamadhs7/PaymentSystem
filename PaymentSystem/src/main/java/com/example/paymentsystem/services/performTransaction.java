@@ -4,11 +4,17 @@ import com.example.paymentsystem.dao.CustomerRepository;
 import com.example.paymentsystem.dao.DepositRepository;
 import com.example.paymentsystem.dao.PaymentTransactionRepository;
 import com.example.paymentsystem.model.*;
+import com.example.paymentsystem.model.enums.CustomerStateEnum;
+import com.example.paymentsystem.model.enums.DebitTypeEnum;
+import com.example.paymentsystem.model.enums.DepositStateEnum;
+import com.example.paymentsystem.model.enums.MathOperationEnum;
 import com.example.paymentsystem.valueobjects.TransactionVO;
 import com.example.paymentsystem.valueobjects.UpdateDepositVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
+
+import java.util.Random;
 
 @Service
 public class performTransaction {
@@ -21,6 +27,9 @@ public class performTransaction {
 
     @Autowired
     PaymentTransactionRepository transactionRepository;
+
+    @Autowired
+    CustomerServices customerServices;
 
     public void debtorTransaction(TransactionVO transactionVO) throws Exception {
         validateTransaction(transactionVO);
@@ -66,9 +75,9 @@ public class performTransaction {
 
     }
 
-    public void doTransaction(TransactionVO transactionVO) {
+    public void doTransaction(TransactionVO transactionVO) throws Exception {
         PaymentTransaction transaction = transactionRepository.save(transactionVO.cloneForDB());
-        //Implement serviceLimitation here
+        customerServices.validateServiceLimitation(transactionVO);
         transactionVO.setMathOperation(MathOperationEnum.MINUS.getValue());
         UpdateDepositVO debtorDeposit = updateDepositBalanceByIdentifier(transactionVO);
         depositRepository.save(debtorDeposit.getDeposit());
@@ -100,8 +109,7 @@ public class performTransaction {
         return new UpdateDepositVO(deposit, generateTrxNumber());
     }
 
-    private String generateTrxNumber() {
+    public static String generateTrxNumber() {
+        return "SEP" + new Random().nextInt(1000000000) + "TRX";
     }
-
-
 }
