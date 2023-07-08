@@ -13,6 +13,9 @@ public class CustomerVO implements Serializable {
     private String firstName;
     private String lastName;
     private String address;
+    private Long id;
+    private Long version;
+    private String fullName;
 
 
     public Customer cloneForDB() {
@@ -25,5 +28,20 @@ public class CustomerVO implements Serializable {
         customer.setLastName(this.lastName);
         customer.setAddress(this.address);
         return customer;
+    }
+
+    public static CustomerVO cloneFromDB(Customer customer) {
+        CustomerVO customerVO = new CustomerVO();
+        customerVO.setNumber(customer.getNumber());
+        customerVO.setPostalCode(customer.getPostalCode());
+        customerVO.setState(customer.getState());
+        customerVO.setNationalCode(customer.getNationalCode());
+        customerVO.setFirstName(customer.getFirstName());
+        customerVO.setLastName(customer.getLastName());
+        customerVO.setAddress(customer.getAddress());
+        customerVO.setId(customer.getId());
+        customerVO.setVersion(customer.getVersion());
+        customerVO.setFullName(customerVO.getFirstName() + " " + customerVO.getLastName());
+        return customerVO;
     }
 }

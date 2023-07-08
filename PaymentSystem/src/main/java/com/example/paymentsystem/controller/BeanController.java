@@ -23,7 +23,8 @@ public class BeanController {
     @Bean
     public PaymentTransaction newPaymentTransaction() {
         return new PaymentTransaction();
-    }@Bean
+    }
+    @Bean
     public PaymentServiceLimitation newPaymentServiceLimitation() {
         return new PaymentServiceLimitation();
     }

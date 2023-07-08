@@ -23,7 +23,5 @@ public class Customer extends EntityManager {
     private String lastName;
     @Column(name = "c_address")
     private String address;
-    @OneToMany
-    private List<Deposit> deposits;
 
 }

@@ -31,12 +31,13 @@ public class CustomerServices {
         if (paymentServiceLimitation == null)
             paymentServiceLimitation = paymentServiceLimitationRepo.saveByTransactionVO(transactionVO);
 
-        Double newCurrentVolume = paymentServiceLimitation.getCurrentVolume() + transactionVO.getAmount();
+        double newCurrentVolume = paymentServiceLimitation.getCurrentVolume() + transactionVO.getAmount();
+        double volumeLimitation = Double.parseDouble(paymentServiceLimitation.getVolumeLimitation());
 
-        if (newCurrentVolume > paymentServiceLimitation.getVolumeLimitation())
+        if (newCurrentVolume > volumeLimitation)
             throw new Exception("Service Limitation Is Not Valid");
 
-        paymentServiceLimitation.setVolumeLimitation(newCurrentVolume);
+        paymentServiceLimitation.setCurrentVolume(newCurrentVolume);
         paymentServiceLimitationRepo.save(paymentServiceLimitation);
 
     }

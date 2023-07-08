@@ -11,6 +11,7 @@ public class EntityManager implements Serializable, Cloneable {
     @Column(name = "c_id")
     private Long id;
 
+    @Version
     @Column(name = "c_version")
     private Long version;
 
