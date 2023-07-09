@@ -3,6 +3,8 @@ package com.example.paymentsystem.valueobjects;
 import com.example.paymentsystem.model.Customer;
 import lombok.Data;
 import java.io.Serializable;
+import java.util.Random;
+
 @Data
 public class CustomerVO implements Serializable {
 
@@ -20,7 +22,7 @@ public class CustomerVO implements Serializable {
 
     public Customer cloneForDB() {
         Customer customer = new Customer();
-        customer.setNumber(this.number);
+        customer.setNumber(String.valueOf(new Random().nextInt(100000)));
         customer.setPostalCode(this.postalCode);
         customer.setState(this.state);
         customer.setNationalCode(this.nationalCode);

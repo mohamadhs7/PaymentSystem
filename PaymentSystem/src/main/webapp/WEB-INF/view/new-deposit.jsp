@@ -4,40 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Customer</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>New Deposit</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .sidebar {
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar li a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .sidebar li a:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 
 <body>
 <div class="container">
-    <h1>Register Customer</h1>
-    <form>
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+    </br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/customers">Customers</a></li>
+                <li><a href="/deposits">Deposits</a></li>
+                <li><a href="/transactions">Transactions</a></li>
+            </ul>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h1>New Deposit</h1>
+            <form>
+                <div class="form-group">
+                    <label for="customerNumber">Customer Number:</label>
+                    <input type="text" class="form-control" id="customerNumber" placeholder="Enter customer number">
+                </div>
+                <div class="form-group">
+                    <label for="balance">Balance:</label>
+                    <input type="number" class="form-control" id="balance" placeholder="Enter balance">
+                </div>
+                <div class="form-group">
+                    <label for="cardPan">Card PAN:</label>
+                    <input type="text" class="form-control" id="cardPan" placeholder="Enter card PAN">
+                </div>
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <select class="form-control" id="state">
+                        <option value="1">Open</option>
+                        <option value="2">Close</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Deposit</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="nationalCode">National Code:</label>
-            <input type="text" class="form-control" id="nationalCode" placeholder="Enter national code">
-        </div>
-        <div class="form-group">
-            <label for="customerNumber">Customer Number:</label>
-            <input type="text" class="form-control" id="customerNumber" placeholder="Enter customer number">
-        </div>
-        <div class="form-group">
-            <label for="openAmount">Open Amount:</label>
-            <input type="number" class="form-control" id="openAmount" placeholder="Enter open amount">
-        </div>
-        <div class="form-group">
-            <label for="balance">Balance:</label>
-            <input type="number" class="form-control" id="balance" placeholder="Enter balance">
-        </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
+    </div>
 </div>
 </body>
 

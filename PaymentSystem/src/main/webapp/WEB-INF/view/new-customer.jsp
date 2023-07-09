@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,38 +46,38 @@
             <div class="sidebar">
                 <h2>Menu</h2>
                 <ul>
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/home/customers">Customers</a></li>
-                    <li><a href="/home/deposits">Deposits</a></li>
-                    <li><a href="/home/transactions">Transactions</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/customers">Customers</a></li>
+                    <li><a href="/deposits">Deposits</a></li>
+                    <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>
         </div>
         <div class="col-md-9">
             <h1>Register Customer</h1>
-            <form>
+        <form:form action="addCustomer" modelAttribute="customer">
                 <div class="form-group">
                     <label for="firstName">First Name:</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name">
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name">
                 </div>
                 <div class="form-group">
                     <label for="nationalCode">National Code:</label>
-                    <input type="text" class="form-control" id="nationalCode" placeholder="Enter national code">
+                    <input type="text" class="form-control" name="nationalCode" id="nationalCode" placeholder="Enter national code">
                 </div>
                 <div class="form-group">
                     <label for="postalCode">Postal Code:</label>
-                    <input type="text" class="form-control" id="postalCode" placeholder="Enter postal code">
+                    <input type="text" class="form-control" name="postalCode" id="postalCode" placeholder="Enter postal code">
                 </div>
                 <div class="form-group">
                     <label for="address">Address:</label>
-                    <input type="text" class="form-control" id="address" placeholder="Enter address">
+                    <input type="text" class="form-control"  name="address" id="address" placeholder="Enter address">
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>
-            </form>
+        </form:form>
         </div>
     </div>
 </div>

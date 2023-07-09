@@ -77,7 +77,6 @@ public class PaymentSystemApplication {
         viewResolver.setViewNames("*.jsp");
         return viewResolver;
     }
-
     public static void main(String[] args) {
         SpringApplication.run(PaymentSystemApplication.class, args);
     }

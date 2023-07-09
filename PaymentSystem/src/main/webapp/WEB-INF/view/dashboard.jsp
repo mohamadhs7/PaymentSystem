@@ -46,10 +46,10 @@
             <div class="sidebar">
                 <h2>Menu</h2>
                 <ul>
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/home/customers">Customers</a></li>
-                    <li><a href="/home/deposits">Deposits</a></li>
-                    <li><a href="/home/transactions">Transactions</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/customers">Customers</a></li>
+                    <li><a href="/deposits">Deposits</a></li>
+                    <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>
         </div>
