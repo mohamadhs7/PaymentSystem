@@ -113,16 +113,16 @@ public class PaymentSystemApplication {
             deposit.setCustomer(customer);
             deposit.setState(DepositStateEnum.Open.state);
             deposit.setBalance(20000D);
-            deposit.setSourceIBAN("IR310120020000000472264727");
+            deposit.setIBAN("IR310120020000000472264727");
             deposit.setNumber("1.1515.10220.1");
             deposit.setCardPan("5022291501892719");
             depositRepository.save(deposit);
 
             Deposit deposit2 = new Deposit();
             deposit2.setCustomer(customer2);
-            deposit2.setState(DepositStateEnum.Close.state);
+            deposit2.setState(DepositStateEnum.Open.state);
             deposit2.setBalance(40000D);
-            deposit2.setSourceIBAN("IR620120020000000534464727");
+            deposit2.setIBAN("IR620120020000000534464727");
             deposit2.setNumber("2.1515.10220.1");
             deposit2.setCardPan("6219861922290910");
             depositRepository.save(deposit2);

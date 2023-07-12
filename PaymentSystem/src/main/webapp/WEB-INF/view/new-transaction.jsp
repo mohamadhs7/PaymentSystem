@@ -1,3 +1,4 @@
+<%@ page import="com.example.paymentsystem.model.enums.DebitTypeEnum" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,31 +56,39 @@
             </div>
         </div>
         <div class="col-md-9">
-            <h1>Register Customer</h1>
+            <h1>New Transaction</h1>
             <hr>
-        <form:form action="addCustomer" modelAttribute="customer">
+            <form:form action="addTransaction" modelAttribute="transaction">
                 <div class="form-group">
-                    <label for="firstName">First Name:</label>
-                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name" required>
+                    <label for="debitType">Debit Type:</label>
+                    <select class="form-control" name="debitType" id="debitType" required>
+                        <option value="<%=DebitTypeEnum.IBAN.type%>">IBAN</option>
+                        <option value="<%=DebitTypeEnum.DepositNumber.type%>">Deposit Number</option>
+                        <option value="<%=DebitTypeEnum.CardPan.type%>">Card PAN</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="lastName">Last Name:</label>
-                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name" required>
+                    <label for="customerNumber">Customer Number:</label>
+                    <input type="number" class="form-control" name="customerNumber" id="customerNumber" placeholder="Enter customer number" required>
                 </div>
                 <div class="form-group">
-                    <label for="nationalCode">National Code:</label>
-                    <input type="number" class="form-control" name="nationalCode" id="nationalCode" placeholder="Enter national code" required>
+                    <label for="identifier">Source Identifier:</label>
+                    <input type="text" class="form-control" name="identifier" id="identifier" placeholder="Enter Source Identifier" required>
                 </div>
                 <div class="form-group">
-                    <label for="postalCode">Postal Code:</label>
-                    <input type="number" class="form-control" name="postalCode" id="postalCode" placeholder="Enter postal code" required>
+                    <label for="destIBAN">Destination IBAN:</label>
+                    <input type="text" class="form-control" name="destIBAN" id="destIBAN" placeholder="Enter destination IBAN" required>
                 </div>
                 <div class="form-group">
-                    <label for="address">Address:</label>
-                    <input type="text" class="form-control"  name="address" id="address" placeholder="Enter address" required>
+                    <label for="instructionId">Instruction Identification:</label>
+                    <input type="number" class="form-control" name="instructionId" id="instructionId" placeholder="Enter instruction identification" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-        </form:form>
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" class="form-control" name="amount" id="amount" placeholder="Enter balance" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Inquire</button>
+            </form:form>
         </div>
     </div>
 </div>

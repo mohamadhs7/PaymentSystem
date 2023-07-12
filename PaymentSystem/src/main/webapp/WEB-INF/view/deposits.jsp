@@ -37,6 +37,12 @@
             background-color: #ddd;
         }
 
+        .inoneline-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
     </style>
 </head>
 <body>
@@ -52,6 +58,7 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/customers">Customers</a></li>
                     <li><a href="/deposits">Deposits</a></li>
+                    <li><a href="/card-request">Card Request</a></li>
                     <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>
@@ -67,7 +74,8 @@
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Number</th>
+                    <th rowspan="2">Number</th>
+                    <th class="inoneline-cell">Customer Number</th>
                     <th>Balance</th>
                     <th>Card Pan</th>
                     <th>IBAN</th>
@@ -79,11 +87,13 @@
                 <tr>
                     <td><%=deposit.getNumber()%>
                     </td>
+                    <td align="center"><%=deposit.getCustomerNumber()%>
+                    </td>
                     <td><%=deposit.getBalance()%>
                     </td>
                     <td><%=deposit.getCardPan()%>
                     </td>
-                    <td><%=deposit.getSourceIBAN()%>
+                    <td><%=deposit.getIBAN()%>
                     </td>
                     <td><%=deposit.getState()%>
                     </td>

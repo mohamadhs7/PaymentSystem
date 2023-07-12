@@ -17,12 +17,11 @@ public class Deposit extends EntityManager {
     private Integer state;
     @Column(name = "c_balance")
     private Double balance;
-    @Column(name = "c_sourceIBAN")
-    private String sourceIBAN;
+    @Column(name = "c_iBAN")
+    private String iBAN;
     @Column(name = "c_number")
     private String number;
     @Column(name = "c_cardPan")
     private String cardPan;
-
 
 }

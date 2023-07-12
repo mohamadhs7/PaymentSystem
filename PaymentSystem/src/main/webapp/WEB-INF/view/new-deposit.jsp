@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,6 +48,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/customers">Customers</a></li>
                 <li><a href="/deposits">Deposits</a></li>
+                <li><a href="/card-request">Card Request</a></li>
                 <li><a href="/transactions">Transactions</a></li>
             </ul>
             </div>
@@ -55,28 +57,25 @@
         <!-- Main Content -->
         <div class="col-md-9">
             <h1>New Deposit</h1>
-            <form>
+            <hr>
+            <form:form action="addDeposit" modelAttribute="deposit">
                 <div class="form-group">
                     <label for="customerNumber">Customer Number:</label>
-                    <input type="text" class="form-control" id="customerNumber" placeholder="Enter customer number">
+                    <input type="number" class="form-control" name="customerNumber" id="customerNumber" placeholder="Enter customer number" required>
                 </div>
                 <div class="form-group">
                     <label for="balance">Balance:</label>
-                    <input type="number" class="form-control" id="balance" placeholder="Enter balance">
-                </div>
-                <div class="form-group">
-                    <label for="cardPan">Card PAN:</label>
-                    <input type="text" class="form-control" id="cardPan" placeholder="Enter card PAN">
+                    <input type="number" class="form-control" name="balance" id="balance" placeholder="Enter balance" required>
                 </div>
                 <div class="form-group">
                     <label for="state">State:</label>
-                    <select class="form-control" id="state">
+                    <select class="form-control" id="state" name="state">
                         <option value="1">Open</option>
                         <option value="2">Close</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Deposit</button>
-            </form>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form:form>
         </div>
     </div>
 </div>

@@ -12,4 +12,11 @@ public enum CustomerStateEnum {
     public Integer getType() {
         return type;
     }
+
+    public static CustomerStateEnum getState(Integer state) {
+        if (state == 1)
+            return Normal;
+        else
+            return Block;
+    }
 }

@@ -22,6 +22,12 @@ public class TransactionVO implements Serializable {
     private Integer transactionType;
     private String creditorName;
     private String debtorName;
+    private String debtorNationalCode;
+    private String creditorNationalCode;
+    private String debtorPostalCode;
+    private String creditorPostalCode;
+    private String debtorState;
+    private String creditorState;
     private Integer terminalType;
     private Integer state;
     private Long branchId;
