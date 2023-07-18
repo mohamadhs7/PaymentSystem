@@ -69,7 +69,7 @@
             <h3>Deposits List</h3>
             <hr>
             <!--  Add New Project Button -->
-            <a href="/new-deposit"
+            <a href="/payTransaction"
                class="btn btn-primary btn-sm mb-3">
                 New Deposit
             </a>

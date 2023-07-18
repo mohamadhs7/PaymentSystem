@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping()
@@ -44,6 +43,8 @@ public class PaymentSystemMVCController {
 
     @Autowired
     PerformTransactionServices transactionServices;
+
+    private TransactionVO transaction;
 
     @GetMapping("customers")
     public ModelAndView showCustomers() {
@@ -143,6 +144,7 @@ public class PaymentSystemMVCController {
     @RequestMapping("/addTransaction")
     public ModelAndView addTransaction(@ModelAttribute("transaction") TransactionVO transactionVO) throws Exception {
         transactionServices.validateTransaction(transactionVO);
+        transaction = transactionVO;
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("transaction", transactionVO);
         modelAndView.setViewName("new-transaction-inquire-info.jsp");
@@ -150,10 +152,10 @@ public class PaymentSystemMVCController {
     }
 
     @RequestMapping("/payTransaction")
-    public ModelAndView payTransaction(@ModelAttribute ("transaction") TransactionVO transactionVO) throws Exception {
-        transactionServices.doTransaction(transactionVO);
+    public ModelAndView payTransaction() throws Exception {
+        transactionServices.doTransaction(transaction);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("transaction", transactionVO);
+        modelAndView.addObject("transaction", transaction);
         modelAndView.setViewName("new-transaction-result.jsp");
         return modelAndView;
     }

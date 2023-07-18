@@ -48,7 +48,6 @@
 <body>
 <%TransactionVO transactionVO = (TransactionVO) request.getAttribute("transaction");%>
 
-<form:form action="payTransaction" modelAttribute="transaction">
 </br>
 <div class="container">
     <div class="row">
@@ -161,8 +160,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <button class="btn btn-primary btn-sm mb-3"
-                                                type="submit">Pay</button>
+                                        <a href="/payTransaction"
+                                           class="btn btn-primary btn-sm mb-3">
+                                            Pay
+                                        </a>
                                         <input type="hidden" name="customerNumber" value="<%=transactionVO.getCustomerNumber()%>">
                                         <input type="hidden" name="identifier" value="<%=transactionVO.getIdentifier()%>">
                                         <input type="hidden" name="destIBAN" value="<%=transactionVO.getDestIBAN()%>">
@@ -178,7 +179,6 @@
         </div>
     </div>
 </div>
-</form:form>
 </body>
 
 </html>

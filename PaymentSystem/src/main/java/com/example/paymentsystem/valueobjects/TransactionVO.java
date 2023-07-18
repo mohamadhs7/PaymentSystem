@@ -37,10 +37,11 @@ public class TransactionVO implements Serializable {
     private String instructionId;
     private String description;
     private Integer debitType;
-    private Integer mathOperation;
     private boolean isSource;
     private long id;
     private String stateName;
+    private Deposit sourceDeposit;
+    private Deposit destDeposit;
 
     public static TransactionVO cloneFromDB(PaymentTransaction transaction) {
         TransactionVO transactionVO = new TransactionVO();
