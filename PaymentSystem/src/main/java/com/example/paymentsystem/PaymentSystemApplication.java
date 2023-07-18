@@ -4,7 +4,6 @@ package com.example.paymentsystem;
 import com.example.paymentsystem.dao.CustomerRepository;
 import com.example.paymentsystem.dao.DepositRepository;
 import com.example.paymentsystem.dao.PaymentTransactionRepository;
-import com.example.paymentsystem.dao.UserRepository;
 import com.example.paymentsystem.model.Customer;
 import com.example.paymentsystem.model.Deposit;
 import com.example.paymentsystem.model.enums.DepositStateEnum;
@@ -33,8 +32,6 @@ public class PaymentSystemApplication {
     @Autowired
     PaymentTransactionRepository transactionRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -112,7 +109,7 @@ public class PaymentSystemApplication {
             Deposit deposit = new Deposit();
             deposit.setCustomer(customer);
             deposit.setState(DepositStateEnum.Open.state);
-            deposit.setBalance(20000D);
+            deposit.setBalance(20000000D);
             deposit.setIBAN("IR310120020000000472264727");
             deposit.setNumber("1.1515.10220.1");
             deposit.setCardPan("5022291501892719");
@@ -127,6 +124,13 @@ public class PaymentSystemApplication {
             deposit2.setCardPan("6219861922290910");
             depositRepository.save(deposit2);
 
+//            PaymentTransaction paymentTransaction = new PaymentTransaction();
+//            paymentTransaction.setId(2L);
+//            paymentTransaction.setCustomerNumber("10220");
+//            paymentTransaction.setSourceIBAN("IR620120020000000534464727");
+//            paymentTransaction.setDestIBAN("IR310120020000000472264727");
+//            paymentTransaction.setAmount(5D);
+//            transactionRepository.save(paymentTransaction);
         };
     }
 

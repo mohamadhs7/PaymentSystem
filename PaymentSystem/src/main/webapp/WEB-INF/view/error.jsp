@@ -34,6 +34,14 @@
         .sidebar li a:hover {
             background-color: #ddd;
         }
+
+        .container {
+            width: 100%;
+            padding-right: 5px;
+            padding-left: 5px;
+            margin-right: auto;
+            margin-left: auto
+        }
     </style>
 </head>
 
@@ -64,7 +72,7 @@
         <!-- Main Content -->
         <div class="col-md-9">
             </br>
-            <h1><%=errorMessage%></h1>
+            <h5><%=errorMessage%></h5>
             </br>
 
             <button class="btn btn-primary" onclick="goBack()">Return </button>

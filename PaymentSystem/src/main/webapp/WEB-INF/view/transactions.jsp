@@ -1,6 +1,6 @@
-<%@ page import="com.example.paymentsystem.valueobjects.CustomerVO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.paymentsystem.valueobjects.TransactionVO" %>
+<%@ page import="java.text.DecimalFormat" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,10 +37,17 @@
             background-color: #ddd;
         }
 
+        .clickable-row {
+            cursor: pointer;
+        }
+
+
     </style>
 </head>
+
 <body>
-<% List<TransactionVO> transactions = (List<TransactionVO>) request.getAttribute("transactions"); %>
+<% List<TransactionVO> transactions = (List<TransactionVO>) request.getAttribute("transactions");
+    DecimalFormat decimalFormat = new DecimalFormat("###,###");%>
 </br>
 <div class="container">
     <div class="row">
@@ -60,9 +67,8 @@
         <div class="col-md-9">
             <h3>Transactions List</h3>
             <hr>
-            <!--  Add New Project Button -->
-            <a href="/new-transaction"
-               class="btn btn-primary btn-sm mb-3">
+            <!-- Add New Project Button -->
+            <a href="/new-transaction" class="btn btn-primary btn-sm mb-3">
                 New Transaction
             </a>
             <table class="table table-bordered table-striped">
@@ -76,18 +82,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <%for (TransactionVO transaction : transactions) { %>
-                <tr>
-                    <td><%=transaction.getSourceIBAN()%>
-                    </td>
-                    <td><%=transaction.getDestIBAN()%>
-                    </td>
-                    <td><%=transaction.getAmount()%>
-                    </td>
-                    <td><%=transaction.getDebtorName()%>
-                    </td>
-                    <td><%=transaction.getState()%>
-                    </td>
+                <% for (TransactionVO transaction : transactions) { %>
+                <tr onclick="window.location='/transaction/<%=transaction.getId()%>';" class="clickable-row">
+                    <td><%=transaction.getSourceIBAN()%></td>
+                    <td><%=transaction.getDestIBAN()%></td>
+                    <td><%=decimalFormat.format(transaction.getAmount())%></td>
+                    <td><%=transaction.getDebtorName()%></td>
+                    <td><%=transaction.getStateName()%></td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -96,5 +97,4 @@
     </div>
 </div>
 </body>
-
 </html>

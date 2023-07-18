@@ -15,7 +15,5 @@ public class PaymentServiceLimitation extends EntityManager {
     private Double currentVolume;
     @Column(name = "c_date")
     private LocalDate date;
-    @Value("${volumeLimitation}")
-    private String volumeLimitation;
 
 }

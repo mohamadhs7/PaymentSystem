@@ -20,4 +20,5 @@ public interface PaymentServiceLimitationRepository extends JpaRepository<Paymen
         paymentServiceLimitation.setCurrentVolume(0D);
         return save(paymentServiceLimitation);
     }
+
 }

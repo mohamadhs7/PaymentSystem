@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="com.example.paymentsystem.valueobjects.TransactionVO" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,15 +36,23 @@
             background-color: #ddd;
         }
 
+        .inoneline-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
     </style>
 </head>
 
 <body>
+<%TransactionVO transactionVO = (TransactionVO) request.getAttribute("transaction");%>
+
+<form:form action="payTransaction" modelAttribute="transaction">
 </br>
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <!-- Sidebar -->
             <div class="sidebar">
                 <h2>Menu</h2>
                 <ul>
@@ -55,58 +65,109 @@
             </div>
         </div>
         <div class="col-md-9">
-            <!-- Main content area -->
             <div class="content">
-                </br>
                 <div class="card">
                     <div class="card-header">
-                        Recent Activity
+                        Transaction Inquire Info
                     </div>
                     <div class="card-body">
                         <div class="container">
+
                             <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Column 1</th>
-                                    <th>Column 2</th>
-                                </tr>
-                                </thead>
                                 <tbody>
                                 <tr>
-                                    <td>Data 1</td>
-                                    <td>Data 2</td>
+                                    <td colspan="2">
+                                        <h5>Source Info :</h5>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 3</td>
-                                    <td>Data 4</td>
+                                    <td>
+                                        <span class="inoneline-cell">Name:</span>
+                                        &nbsp;
+                                        <input class="text" readonly name="debtorName" value="<%=transactionVO.getDebtorName()%>">
+                                    </td>
+                                    <td style="width: 600px">
+                                        <span class="inoneline-cell">National Code:</span>
+                                        &nbsp;
+                                        <input class="text" readonly name="debtorNationalCode" value="<%=transactionVO.getDebtorNationalCode()%>">
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 5</td>
-                                    <td>Data 6</td>
+                                    <td>
+                                        <span class="inoneline-cell">Postal Code:</span>
+                                        &nbsp;
+                                        <input class="text" readonly name="debtorPostalCode" value="<%=transactionVO.getDebtorPostalCode()%>">
+                                    </td>
+                                    <td>
+                                        <span class="inoneline-cell">State:</span>
+                                        &nbsp;
+                                        <input class="text" name="debtorState" readonly value="<%=transactionVO.getDebtorState()%>">
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 7</td>
-                                    <td>Data 8</td>
+                                    <td>
+                                        <br>
+                                        <h5>Destination Info :</h5>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 9</td>
-                                    <td>Data 10</td>
+                                    <td>
+                                        <span class="inoneline-cell">Name:</span>
+                                        &nbsp;
+                                        <input class="text" name="creditorName" readonly value="<%=transactionVO.getCreditorName()%>">
+                                    </td>
+                                    <td width="600px">
+                                        <span class="inoneline-cell">National Code:</span>
+                                        &nbsp;
+                                        <input class="text" name="creditorNationalCode" readonly value="<%=transactionVO.getCreditorNationalCode()%>">
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 11</td>
-                                    <td>Data 12</td>
+                                    <td>
+                                        <span class="inoneline-cell">Postal Code:</span>
+                                        &nbsp;
+                                        <input class="text" name="creditorNationalCode" readonly value="<%=transactionVO.getCreditorPostalCode()%>">
+                                    </td>
+                                    <td>
+                                        <span class="inoneline-cell">State:</span>
+                                        &nbsp;
+                                        <input class="text" name="creditorState" readonly value="<%=transactionVO.getCreditorState()%>">
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 13</td>
-                                    <td>Data 14</td>
+                                    <td>
+                                        <br>
+                                        <h5>Transaction Info :</h5>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 15</td>
-                                    <td>Data 16</td>
+                                    <td>
+                                        <span class="inoneline-cell">Amount:</span>
+                                        &nbsp;
+                                        <input class="text" name="amount" readonly value="<%=transactionVO.getAmount()%>">
+                                    </td>
+                                    <td>
+                                        <span class="inoneline-cell">Fee Amount:</span>
+                                        &nbsp;
+                                        <input class="text" name="feeAmount" readonly value="<%=transactionVO.getFeeAmount()%>">
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Data 17</td>
-                                    <td>Data 18</td>
+                                    <td style="width: 600px">
+                                        <span class="inoneline-cell">InstructionId:</span>
+                                        &nbsp;
+                                        <input class="text" name="instructionId" readonly value="<%=transactionVO.getInstructionId()%>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mb-3"
+                                                type="submit">Pay</button>
+                                        <input type="hidden" name="customerNumber" value="<%=transactionVO.getCustomerNumber()%>">
+                                        <input type="hidden" name="identifier" value="<%=transactionVO.getIdentifier()%>">
+                                        <input type="hidden" name="destIBAN" value="<%=transactionVO.getDestIBAN()%>">
+                                        <input type="hidden" name="debitType" value="<%=transactionVO.getDebitType()%>">
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -117,6 +178,7 @@
         </div>
     </div>
 </div>
+</form:form>
 </body>
 
 </html>

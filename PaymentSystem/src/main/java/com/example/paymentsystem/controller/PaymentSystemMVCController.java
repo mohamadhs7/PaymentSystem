@@ -3,6 +3,7 @@ package com.example.paymentsystem.controller;
 import com.example.paymentsystem.dao.CustomerRepository;
 import com.example.paymentsystem.dao.DepositRepository;
 import com.example.paymentsystem.dao.PaymentTransactionRepository;
+import com.example.paymentsystem.model.PaymentTransaction;
 import com.example.paymentsystem.services.CustomerServices;
 import com.example.paymentsystem.services.DepositServices;
 import com.example.paymentsystem.services.PerformTransactionServices;
@@ -12,12 +13,15 @@ import com.example.paymentsystem.valueobjects.TransactionVO;
 import com.example.paymentsystem.valueobjects.UpdateDepositVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping()
@@ -145,4 +149,19 @@ public class PaymentSystemMVCController {
         return modelAndView;
     }
 
+    @RequestMapping("/payTransaction")
+    public ModelAndView payTransaction(@ModelAttribute ("transaction") TransactionVO transactionVO) throws Exception {
+        transactionServices.doTransaction(transactionVO);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("transaction", transactionVO);
+        modelAndView.setViewName("new-transaction-result.jsp");
+        return modelAndView;
+    }
+
+    @GetMapping("/transaction/{id}")
+    public String showTransactionDetails(@PathVariable("id") Long id, Model model) {
+        TransactionVO transaction = paymentTransactionRepo.findByIdInVO(id);
+        model.addAttribute("transaction", transaction);
+        return "transaction-details.jsp";
+    }
 }

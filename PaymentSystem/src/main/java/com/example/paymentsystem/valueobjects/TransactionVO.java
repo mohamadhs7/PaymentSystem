@@ -1,5 +1,6 @@
 package com.example.paymentsystem.valueobjects;
 
+import com.example.paymentsystem.model.Deposit;
 import com.example.paymentsystem.model.PaymentTransaction;
 import com.example.paymentsystem.model.enums.TransactionStateEnum;
 import lombok.Data;
@@ -37,13 +38,17 @@ public class TransactionVO implements Serializable {
     private String description;
     private Integer debitType;
     private Integer mathOperation;
+    private boolean isSource;
+    private long id;
+    private String stateName;
 
     public static TransactionVO cloneFromDB(PaymentTransaction transaction) {
         TransactionVO transactionVO = new TransactionVO();
+        transactionVO.setId(transaction.getId());
         transactionVO.setAmount(transaction.getAmount());
         transactionVO.setFeeAmount(transaction.getFeeAmount());
-        transactionVO.setDebtorTrxNumber(transaction.getDebtorTrxNumber());
-        transactionVO.setCreditorTrxNumber(transaction.getCreditorTrxNumber());
+        transactionVO.setDebtorTrxNumber(transaction.getDebtorTrxNumber() != null ? transaction.getDebtorTrxNumber() : "");
+        transactionVO.setCreditorTrxNumber(transaction.getCreditorTrxNumber() != null ? transaction.getCreditorTrxNumber() : "");
         transactionVO.setSourceIBAN(transaction.getSourceIBAN());
         transactionVO.setDestIBAN(transaction.getDestIBAN());
         transactionVO.setDepositNumber(transaction.getDepositNumber());
@@ -59,6 +64,7 @@ public class TransactionVO implements Serializable {
         transactionVO.setInstructionId(transaction.getInstructionId());
         transactionVO.setDescription(transaction.getDescription());
         transactionVO.setDebitType(transaction.getDebitType());
+        transactionVO.setStateName(TransactionStateEnum.getName(transaction.getState()));
         return transactionVO;
     }
 
@@ -77,7 +83,7 @@ public class TransactionVO implements Serializable {
         paymentTransaction.setTerminalType(this.terminalType);
         paymentTransaction.setState(this.state);
         paymentTransaction.setBranchId(this.branchId);
-        paymentTransaction.setDate(this.date);
+        paymentTransaction.setDate(new Date());
         paymentTransaction.setCustomerNumber(this.customerNumber);
         paymentTransaction.setDescription(this.description);
         paymentTransaction.setInstructionId(this.instructionId);

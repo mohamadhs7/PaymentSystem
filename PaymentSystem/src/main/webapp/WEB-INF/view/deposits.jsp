@@ -1,6 +1,7 @@
 <%@ page import="com.example.paymentsystem.valueobjects.CustomerVO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.paymentsystem.valueobjects.DepositVO" %>
+<%@ page import="java.text.DecimalFormat" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +47,8 @@
     </style>
 </head>
 <body>
-<% List<DepositVO> deposits = (List<DepositVO>) request.getAttribute("deposits"); %>
+<% List<DepositVO> deposits = (List<DepositVO>) request.getAttribute("deposits");
+    DecimalFormat decimalFormat = new DecimalFormat("###,###");%>
 </br>
 <div class="container">
     <div class="row">
@@ -89,13 +91,13 @@
                     </td>
                     <td align="center"><%=deposit.getCustomerNumber()%>
                     </td>
-                    <td><%=deposit.getBalance()%>
+                    <td><%=decimalFormat.format(deposit.getBalance())%>
                     </td>
                     <td><%=deposit.getCardPan()%>
                     </td>
                     <td><%=deposit.getIBAN()%>
                     </td>
-                    <td><%=deposit.getState()%>
+                    <td><%=deposit.getStateName()%>
                     </td>
                 </tr>
                 <% } %>

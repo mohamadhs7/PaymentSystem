@@ -2,6 +2,7 @@ package com.example.paymentsystem.valueobjects;
 
 import com.example.paymentsystem.model.Customer;
 import com.example.paymentsystem.model.Deposit;
+import com.example.paymentsystem.model.enums.DepositStateEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,9 +20,12 @@ public class DepositVO implements Serializable {
     private String customerNumber;
     private Customer customer;
 
+    private String stateName;
+
     public static DepositVO cloneFromDB(Deposit deposit) {
         DepositVO depositVO = new DepositVO();
         depositVO.setState(deposit.getState());
+        depositVO.setStateName(DepositStateEnum.getName(deposit.getState()));
         depositVO.setBalance(deposit.getBalance());
         depositVO.setIBAN(deposit.getIBAN());
         depositVO.setNumber(deposit.getNumber());

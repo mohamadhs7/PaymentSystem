@@ -1,11 +1,16 @@
 package com.example.paymentsystem.services;
 
+import com.example.paymentsystem.controller.PaymentSystemConfigs;
 import com.example.paymentsystem.dao.CustomerRepository;
 import com.example.paymentsystem.dao.PaymentServiceLimitationRepository;
+import com.example.paymentsystem.exception.GlobalExceptionHandler;
 import com.example.paymentsystem.model.Customer;
 import com.example.paymentsystem.model.PaymentServiceLimitation;
+import com.example.paymentsystem.model.enums.TransactionStateEnum;
 import com.example.paymentsystem.valueobjects.CustomerVO;
 import com.example.paymentsystem.valueobjects.TransactionVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +25,10 @@ public class CustomerServices {
     @Autowired
     PaymentServiceLimitationRepository paymentServiceLimitationRepo;
 
+    @Autowired
+    PaymentSystemConfigs paymentSystemConfigs;
+
+
     public void addCustomer(CustomerVO customerVO) {
         Customer customer = customerVO.cloneForDB();
         customerRepository.save(customer);
@@ -32,7 +41,7 @@ public class CustomerServices {
             paymentServiceLimitation = paymentServiceLimitationRepo.saveByTransactionVO(transactionVO);
 
         double newCurrentVolume = paymentServiceLimitation.getCurrentVolume() + transactionVO.getAmount();
-        double volumeLimitation = Double.parseDouble(paymentServiceLimitation.getVolumeLimitation());
+        double volumeLimitation = Double.parseDouble(paymentSystemConfigs.getVolumeLimitation());
 
         if (newCurrentVolume > volumeLimitation)
             throw new Exception("Service Limitation Is Not Valid");
@@ -41,6 +50,5 @@ public class CustomerServices {
         paymentServiceLimitationRepo.save(paymentServiceLimitation);
 
     }
-
 
 }

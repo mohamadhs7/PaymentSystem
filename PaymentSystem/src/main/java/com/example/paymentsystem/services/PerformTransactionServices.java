@@ -4,10 +4,7 @@ import com.example.paymentsystem.dao.CustomerRepository;
 import com.example.paymentsystem.dao.DepositRepository;
 import com.example.paymentsystem.dao.PaymentTransactionRepository;
 import com.example.paymentsystem.model.*;
-import com.example.paymentsystem.model.enums.CustomerStateEnum;
-import com.example.paymentsystem.model.enums.DebitTypeEnum;
-import com.example.paymentsystem.model.enums.DepositStateEnum;
-import com.example.paymentsystem.model.enums.MathOperationEnum;
+import com.example.paymentsystem.model.enums.*;
 import com.example.paymentsystem.valueobjects.CustomerVO;
 import com.example.paymentsystem.valueobjects.DepositVO;
 import com.example.paymentsystem.valueobjects.TransactionVO;
@@ -18,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -50,6 +48,15 @@ public class PerformTransactionServices {
         Deposit destDeposit;
         String destIban = transactionVO.getDestIBAN();
 
+        if (!(transactionVO.getAmount() > 0D))
+            throw new Exception("Amount is Not Valid");
+
+        if (StringUtils.isEmpty(transactionVO.getInstructionId()))
+            throw new Exception("Instruction Id Is Not Valid");
+
+        transactionVO.setDate(new Date());
+        transactionVO.setFeeAmount(600D);
+
         if (transactionVO.getDebitType().equals(DebitTypeEnum.IBAN.getType())) {
 
             if (StringUtils.isEmpty(transactionVO.getIdentifier()) || !transactionVO.getIdentifier().contains("IR"))
@@ -57,17 +64,29 @@ public class PerformTransactionServices {
 
             deposit = depositRepository.getDepositByiBAN(transactionVO.getIdentifier());
 
+            if (!(deposit.getBalance() - (transactionVO.getAmount() + transactionVO.getFeeAmount()) >= 0D))
+                throw new Exception("Deposit Balance Is Not Enough");
+
+            transactionVO.setSourceIBAN(transactionVO.getIdentifier());
+            transactionVO.setDepositNumber(deposit.getNumber());
+
         }
 
         if (transactionVO.getDebitType().equals(DebitTypeEnum.DepositNumber.getType())) {
 
             deposit = depositRepository.getDepositByNumber(transactionVO.getIdentifier());
 
+            if (!(deposit.getBalance() - (transactionVO.getAmount() + transactionVO.getFeeAmount()) >= 0D))
+                throw new Exception("Deposit Balance Is Not Enough");
+
         }
 
         if (transactionVO.getDebitType().equals(DebitTypeEnum.CardPan.getType())) {
 
             deposit = depositRepository.getDepositByCardPan(transactionVO.getIdentifier());
+
+            if (!(deposit.getBalance() - (transactionVO.getAmount() + transactionVO.getFeeAmount()) >= 0D))
+                throw new Exception("Deposit Balance Is Not Enough");
 
         }
 
@@ -112,39 +131,69 @@ public class PerformTransactionServices {
         } else
             throw new Exception("There is No Deposit On " + transactionVO.getDestIBAN());
 
-
-        if (!(transactionVO.getAmount() > 0D))
-            throw new Exception("Amount is Not Valid");
-
-        if (StringUtils.isEmpty(transactionVO.getInstructionId()))
-            throw new Exception("Instruction Id Is Not Valid");
-
     }
 
     public void doTransaction(TransactionVO transactionVO) throws Exception {
         PaymentTransaction transaction = transactionRepository.save(transactionVO.cloneForDB());
-        customerServices.validateServiceLimitation(transactionVO);
-        transactionVO.setMathOperation(MathOperationEnum.MINUS.getValue());
-        UpdateDepositVO debtorDeposit = updateDepositBalanceByIdentifier(transactionVO);
-        depositRepository.save(debtorDeposit.getDeposit());
-        transactionVO.setMathOperation(MathOperationEnum.SUM.getValue());
-        UpdateDepositVO creditorDeposit = updateDepositBalanceByIdentifier(transactionVO);
-        depositRepository.save(creditorDeposit.getDeposit());
-        transaction.setDebtorTrxNumber(debtorDeposit.getTrxNumber());
-        transaction.setCreditorTrxNumber(creditorDeposit.getTrxNumber());
-        transactionRepository.save(transaction);
-
+        try {
+            transactionVO.setMathOperation(MathOperationEnum.MINUS.getValue());
+            transactionVO.setSource(true);
+            UpdateDepositVO debtorDeposit = updateDepositBalanceByIdentifier(transactionVO);
+            transactionVO.setMathOperation(MathOperationEnum.SUM.getValue());
+            transactionVO.setSource(false);
+            UpdateDepositVO creditorDeposit = updateDepositBalanceByIdentifier(transactionVO);
+            transaction.setDebtorTrxNumber(debtorDeposit.getTrxNumber());
+            transaction.setCreditorTrxNumber(creditorDeposit.getTrxNumber());
+            transaction.setSourceIBAN(transactionVO.getSourceIBAN());
+            transaction.setCardPan(transactionVO.getCardPan());
+            transaction.setDepositNumber(transactionVO.getDepositNumber());
+            customerServices.validateServiceLimitation(transactionVO);
+            depositRepository.save(debtorDeposit.getDeposit());
+            depositRepository.save(creditorDeposit.getDeposit());
+            transactionVO.setDebtorTrxNumber(debtorDeposit.getTrxNumber());
+            transactionVO.setCreditorTrxNumber(creditorDeposit.getTrxNumber());
+            transactionVO.setDescription("Transaction Is Done Successfully");
+            transaction.setState(TransactionStateEnum.Success.value);
+            transactionRepository.save(transaction);
+        } catch (Throwable e) {
+            transaction.setState(TransactionStateEnum.Unsuccessful.value);
+            transaction.setDebtorTrxNumber(null);
+            transaction.setCreditorTrxNumber(null);
+            transactionRepository.save(transaction);
+            throw e;
+        }
     }
 
     public UpdateDepositVO updateDepositBalanceByIdentifier(TransactionVO transactionVO) {
         Deposit deposit = null;
 
-        if (DebitTypeEnum.IBAN.getType().equals(transactionVO.getDebitType()))
+        if (DebitTypeEnum.IBAN.getType().equals(transactionVO.getDebitType())) {
             deposit = depositRepository.getDepositByiBAN(transactionVO.getIdentifier());
-        else if (DebitTypeEnum.DepositNumber.getType().equals(transactionVO.getDebitType()))
+
+            if (transactionVO.isSource()) {
+                transactionVO.setSourceIBAN(transactionVO.getIdentifier());
+                transactionVO.setDepositNumber(deposit.getNumber());
+                transactionVO.setCardPan(deposit.getCardPan());
+            }
+
+        } else if (DebitTypeEnum.DepositNumber.getType().equals(transactionVO.getDebitType())) {
             deposit = depositRepository.getDepositByNumber(transactionVO.getIdentifier());
-        else if (DebitTypeEnum.CardPan.getType().equals(transactionVO.getDebitType()))
+
+            if (transactionVO.isSource()) {
+                transactionVO.setSourceIBAN(deposit.getIBAN());
+                transactionVO.setDepositNumber(transactionVO.getIdentifier());
+                transactionVO.setCardPan(deposit.getCardPan());
+            }
+
+        } else if (DebitTypeEnum.CardPan.getType().equals(transactionVO.getDebitType())) {
             deposit = depositRepository.getDepositByCardPan(transactionVO.getIdentifier());
+
+            if (transactionVO.isSource()) {
+                transactionVO.setSourceIBAN(deposit.getIBAN());
+                transactionVO.setDepositNumber(deposit.getNumber());
+                transactionVO.setCardPan(transactionVO.getIdentifier());
+            }
+        }
 
 
         if (transactionVO.getMathOperation().equals(MathOperationEnum.SUM.getValue()))

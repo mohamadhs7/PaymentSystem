@@ -35,6 +35,26 @@
             background-color: #ddd;
         }
     </style>
+    <script>
+        function formatNumber(value) {
+            // Remove any existing commas from the input value
+            var cleanedValue = value.replace(/,/g, '');
+
+            // Format the value with commas
+            var formattedValue = Number(cleanedValue).toLocaleString();
+
+            // Set the formatted value in the input box
+            document.getElementById('balanceString').value = formattedValue;
+
+            // Use the cleaned value (without commas) for further processing or sending to the system
+            sendToSystem(cleanedValue)
+        }
+
+        function sendToSystem(value) {
+            var amount = document.getElementById("balance");
+            amount.value = value;
+        }
+    </script>
 </head>
 
 <body>
@@ -65,7 +85,8 @@
                 </div>
                 <div class="form-group">
                     <label for="balance">Balance:</label>
-                    <input type="number" class="form-control" name="balance" id="balance" placeholder="Enter balance" required>
+                    <input type="text" class="form-control" name="balanceString" id="balanceString" placeholder="Enter balance" oninput="formatNumber(this.value)" required>
+                    <input type="hidden" class="form-control" name="balance" id="balance">
                 </div>
                 <div class="form-group">
                     <label for="state">State:</label>

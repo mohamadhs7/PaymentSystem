@@ -14,4 +14,11 @@ public enum DepositStateEnum {
     public Integer getValue() {
         return state;
     }
+
+    public static String getName(Integer state) {
+        if (Open.getValue().equals(state))
+            return "Open";
+        else
+            return "Close";
+    }
 }

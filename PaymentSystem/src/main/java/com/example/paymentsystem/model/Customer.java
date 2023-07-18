@@ -4,8 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
+
 @Data
 @Entity
 public class Customer extends EntityManager {

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Customer</title>
+    <title>New Transaction</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
@@ -36,6 +36,27 @@
             background-color: #ddd;
         }
     </style>
+
+    <script>
+        function formatNumber(value) {
+            // Remove any existing commas from the input value
+            var cleanedValue = value.replace(/,/g, '');
+
+            // Format the value with commas
+            var formattedValue = Number(cleanedValue).toLocaleString();
+
+            // Set the formatted value in the input box
+            document.getElementById('amountString').value = formattedValue;
+
+            // Use the cleaned value (without commas) for further processing or sending to the system
+            sendToSystem(cleanedValue)
+        }
+
+        function sendToSystem(value) {
+            var amount = document.getElementById("amount");
+            amount.value = value;
+        }
+    </script>
 </head>
 
 <body>
@@ -84,9 +105,10 @@
                     <input type="number" class="form-control" name="instructionId" id="instructionId" placeholder="Enter instruction identification" required>
                 </div>
                 <div class="form-group">
-                    <label for="amount">Amount:</label>
-                    <input type="number" class="form-control" name="amount" id="amount" placeholder="Enter balance" required>
+                    <label for="amountString">Amount:</label>
+                    <input type="text" class="form-control" name="amountString" id="amountString" placeholder="Enter Amount" oninput="formatNumber(this.value)" required>
                 </div>
+                <input type="hidden" id="amount" name="amount">
                 <button type="submit" class="btn btn-primary">Inquire</button>
             </form:form>
         </div>
