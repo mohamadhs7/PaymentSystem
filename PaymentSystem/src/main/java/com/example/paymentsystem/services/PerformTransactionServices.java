@@ -42,7 +42,6 @@ public class PerformTransactionServices {
 
     public void validateTransaction(TransactionVO transactionVO) throws Exception {
 
-        Customer customer;
         Customer destCustomer;
         Deposit sourceDeposit = null;
         Deposit destDeposit;
@@ -64,20 +63,28 @@ public class PerformTransactionServices {
 
             sourceDeposit = depositRepository.getDepositByiBAN(transactionVO.getIdentifier());
 
+            depositNullChecking(transactionVO, sourceDeposit);
+
             if (!(sourceDeposit.getBalance() - (transactionVO.getAmount() + transactionVO.getFeeAmount()) >= 0D))
                 throw new Exception("Deposit Balance Is Not Enough");
 
             transactionVO.setSourceIBAN(transactionVO.getIdentifier());
             transactionVO.setDepositNumber(sourceDeposit.getNumber());
-
+            transactionVO.setCardPan(sourceDeposit.getCardPan());
         }
 
         if (transactionVO.getDebitType().equals(DebitTypeEnum.DepositNumber.getType())) {
 
             sourceDeposit = depositRepository.getDepositByNumber(transactionVO.getIdentifier());
 
+            depositNullChecking(transactionVO, sourceDeposit);
+
             if (!(sourceDeposit.getBalance() - (transactionVO.getAmount() + transactionVO.getFeeAmount()) >= 0D))
                 throw new Exception("Deposit Balance Is Not Enough");
+
+            transactionVO.setSourceIBAN(sourceDeposit.getIBAN());
+            transactionVO.setDepositNumber(transactionVO.getIdentifier());
+            transactionVO.setCardPan(sourceDeposit.getCardPan());
 
         }
 
@@ -85,31 +92,16 @@ public class PerformTransactionServices {
 
             sourceDeposit = depositRepository.getDepositByCardPan(transactionVO.getIdentifier());
 
+            depositNullChecking(transactionVO, sourceDeposit);
+
+            transactionVO.setSourceIBAN(sourceDeposit.getIBAN());
+            transactionVO.setDepositNumber(sourceDeposit.getNumber());
+            transactionVO.setCardPan(transactionVO.getIdentifier());
+
             if (!(sourceDeposit.getBalance() - (transactionVO.getAmount() + transactionVO.getFeeAmount()) >= 0D))
                 throw new Exception("Deposit Balance Is Not Enough");
 
         }
-
-        if (sourceDeposit != null) {
-
-            if (sourceDeposit.getState().equals(DepositStateEnum.Close.getValue()))
-                throw new Exception("Deposit is Closed");
-
-            customer = sourceDeposit.getCustomer();
-
-            if (!customer.getNumber().equals(transactionVO.getCustomerNumber()))
-                throw new Exception("Customer Number is Not Correct");
-
-            if (customer.getState().equals(CustomerStateEnum.Block.getType()))
-                throw new Exception("Customer is Block");
-
-            transactionVO.setDebtorName(customer.getFirstName() + "" + customer.getLastName());
-            transactionVO.setDebtorState(CustomerStateEnum.getState(customer.getState()).name());
-            transactionVO.setDebtorNationalCode(customer.getNationalCode());
-            transactionVO.setDebtorPostalCode(customer.getPostalCode());
-
-        } else
-            throw new Exception("There is No Deposit On " + transactionVO.getIdentifier());
 
         if (StringUtils.isEmpty(destIban) || !destIban.contains("IR"))
             throw new Exception("Destination IBAN Is Not Valid");
@@ -143,7 +135,6 @@ public class PerformTransactionServices {
         try {
             transactionVO.setSource(true);
             sourceDeposit = updateDepositBalanceByIdentifier(transactionVO);
-            setPropertiesForTransaction(transactionVO);
             transactionVO.setSource(false);
             destDeposit = updateDepositBalanceByIdentifier(transactionVO);
             transaction.setDebtorTrxNumber(generateTrxNumber());
@@ -182,26 +173,28 @@ public class PerformTransactionServices {
         return deposit;
     }
 
-    public static void setPropertiesForTransaction(TransactionVO transactionVO) {
+    public static void depositNullChecking(TransactionVO transactionVO, Deposit deposit) throws Exception {
+        if (deposit != null) {
 
-        if (DebitTypeEnum.IBAN.getType().equals(transactionVO.getDebitType())) {
+            if (deposit.getState().equals(DepositStateEnum.Close.getValue()))
+                throw new Exception("Deposit is Closed");
 
-                transactionVO.setSourceIBAN(transactionVO.getIdentifier());
-                transactionVO.setDepositNumber(transactionVO.getSourceDeposit().getNumber());
-                transactionVO.setCardPan(transactionVO.getSourceDeposit().getCardPan());
+            Customer customer = deposit.getCustomer();
 
-        } else if (DebitTypeEnum.DepositNumber.getType().equals(transactionVO.getDebitType())) {
+            if (!customer.getNumber().equals(transactionVO.getCustomerNumber()))
+                throw new Exception("Customer Number is Not Correct");
 
-                transactionVO.setSourceIBAN(transactionVO.getSourceDeposit().getIBAN());
-                transactionVO.setDepositNumber(transactionVO.getIdentifier());
-                transactionVO.setCardPan(transactionVO.getSourceDeposit().getCardPan());
+            if (customer.getState().equals(CustomerStateEnum.Block.getType()))
+                throw new Exception("Customer is Block");
 
-        } else if (DebitTypeEnum.CardPan.getType().equals(transactionVO.getDebitType())) {
+            transactionVO.setDebtorName(customer.getFirstName() + "" + customer.getLastName());
+            transactionVO.setDebtorState(CustomerStateEnum.getState(customer.getState()).name());
+            transactionVO.setDebtorNationalCode(customer.getNationalCode());
+            transactionVO.setDebtorPostalCode(customer.getPostalCode());
 
-                transactionVO.setSourceIBAN(transactionVO.getSourceDeposit().getIBAN());
-                transactionVO.setDepositNumber(transactionVO.getSourceDeposit().getNumber());
-                transactionVO.setCardPan(transactionVO.getIdentifier());
-        }
+        } else
+            throw new Exception("There is No Deposit On " + transactionVO.getIdentifier());
+
     }
 
     public static String generateTrxNumber() {

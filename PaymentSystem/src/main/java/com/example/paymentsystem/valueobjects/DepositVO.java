@@ -29,7 +29,7 @@ public class DepositVO implements Serializable {
         depositVO.setBalance(deposit.getBalance());
         depositVO.setIBAN(deposit.getIBAN());
         depositVO.setNumber(deposit.getNumber());
-        depositVO.setCardPan(deposit.getCardPan());
+        depositVO.setCardPan(deposit.getCardPan() != null ? deposit.getCardPan() : "-------");
         if (deposit.getCustomer() != null)
             depositVO.setCustomerNumber(deposit.getCustomer().getNumber());
         return depositVO;

@@ -3,14 +3,13 @@ package com.example.paymentsystem.controller;
 import com.example.paymentsystem.dao.CustomerRepository;
 import com.example.paymentsystem.dao.DepositRepository;
 import com.example.paymentsystem.dao.PaymentTransactionRepository;
+import com.example.paymentsystem.model.Customer;
+import com.example.paymentsystem.model.Deposit;
 import com.example.paymentsystem.model.PaymentTransaction;
 import com.example.paymentsystem.services.CustomerServices;
 import com.example.paymentsystem.services.DepositServices;
 import com.example.paymentsystem.services.PerformTransactionServices;
-import com.example.paymentsystem.valueobjects.CustomerVO;
-import com.example.paymentsystem.valueobjects.DepositVO;
-import com.example.paymentsystem.valueobjects.TransactionVO;
-import com.example.paymentsystem.valueobjects.UpdateDepositVO;
+import com.example.paymentsystem.valueobjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -165,5 +164,44 @@ public class PaymentSystemMVCController {
         TransactionVO transaction = paymentTransactionRepo.findByIdInVO(id);
         model.addAttribute("transaction", transaction);
         return "transaction-details.jsp";
+    }
+
+    @GetMapping("changeCustomerState")
+    public ModelAndView changeCustomerState() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("updateCustomer", new UpdateCustomerVO());
+        modelAndView.setViewName("customer-change-state.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping("doChangeCustomerState")
+    public ModelAndView doChangeCustomerState(@ModelAttribute("updateCustomer") UpdateCustomerVO updateCustomerVO) {
+        Customer customer = customerRepo.getCustomerByNumber(updateCustomerVO.getCustomerNumber());
+        customer.setState(updateCustomerVO.getState());
+        customerRepo.save(customer);
+        ModelAndView modelAndView = new ModelAndView();
+        List<CustomerVO> customerVOList = customerRepo.findAllInVO();
+        modelAndView.addObject("customers", customerVOList);
+        modelAndView.setViewName("customers.jsp");
+        return modelAndView;
+    }
+
+    @GetMapping("changeDepositState")
+    public ModelAndView changeDepositState() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("updateDeposit", new UpdateDepositVO());
+        modelAndView.setViewName("deposit-change-state.jsp");
+        return modelAndView;
+    }
+    @RequestMapping("doChangeDepositState")
+    public ModelAndView doChangeDepositState(@ModelAttribute("updateDeposit") UpdateDepositVO updateDepositVO) {
+        Deposit deposit = depositRepo.getDepositByNumber(updateDepositVO.getDepositNumber());
+        deposit.setState(updateDepositVO.getState());
+        depositRepo.save(deposit);
+        ModelAndView modelAndView = new ModelAndView();
+        List<DepositVO> depositVOList = depositRepo.findAllInVO();
+        modelAndView.addObject("deposits", depositVOList);
+        modelAndView.setViewName("deposits.jsp");
+        return modelAndView;
     }
 }

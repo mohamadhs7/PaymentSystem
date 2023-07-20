@@ -51,7 +51,6 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/customers">Customers</a></li>
                     <li><a href="/deposits">Deposits</a></li>
-                    <li><a href="/card-request">Card Request</a></li>
                     <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>
@@ -64,6 +63,10 @@
                class="btn btn-primary btn-sm mb-3">
                 New Customer
             </a>
+            <a href="/changeCustomerState"
+               class="btn btn-primary btn-sm mb-3">
+                Change State
+            </a>
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                 <tr>
@@ -72,6 +75,7 @@
                     <th>National Code</th>
                     <th>Postal Code</th>
                     <th>Address</th>
+                    <th>State</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -86,6 +90,8 @@
                     <td><%=customer.getPostalCode()%>
                     </td>
                     <td><%=customer.getAddress()%>
+                    </td>
+                    <td><%=customer.getStateString()%>
                     </td>
                 </tr>
                 <% } %>

@@ -71,7 +71,6 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/customers">Customers</a></li>
                     <li><a href="/deposits">Deposits</a></li>
-                    <li><a href="/card-request">Card Request</a></li>
                     <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>

@@ -1,3 +1,4 @@
+<%@ page import="com.example.paymentsystem.valueobjects.UpdateCustomerVO" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -5,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error Page</title>
+    <title>Change Customer State</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
@@ -34,25 +35,10 @@
         .sidebar li a:hover {
             background-color: #ddd;
         }
-
-        .container {
-            width: 100%;
-            padding-right: 5px;
-            padding-left: 5px;
-            margin-right: auto;
-            margin-left: auto
-        }
     </style>
+
 </head>
-
 <body>
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-
-<%String errorMessage = request.getAttribute("errorMessage").toString();%>
 <div class="container">
     </br>
     <div class="row">
@@ -70,12 +56,22 @@
 
         <!-- Main Content -->
         <div class="col-md-9">
-            </br>
-            <h5><%=errorMessage%></h5>
-            </br>
-
-            <button class="btn btn-primary" onclick="goBack()">Return </button>
-
+            <h1>Change Deposit State</h1>
+            <hr>
+            <form:form action="doChangeDepositState" modelAttribute="updateDeposit">
+                <div class="form-group">
+                    <label for="depositNumber">Deposit Number:</label>
+                    <input type="text" class="form-control" name="depositNumber" id="depositNumber" placeholder="Enter deposit number" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <select class="form-control" id="state" name="state">
+                        <option value="1">Open</option>
+                        <option value="2">Close</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form:form>
         </div>
     </div>
 </div>

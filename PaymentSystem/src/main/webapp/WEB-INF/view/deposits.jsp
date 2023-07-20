@@ -60,7 +60,6 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/customers">Customers</a></li>
                     <li><a href="/deposits">Deposits</a></li>
-                    <li><a href="/card-request">Card Request</a></li>
                     <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>
@@ -69,9 +68,17 @@
             <h3>Deposits List</h3>
             <hr>
             <!--  Add New Project Button -->
-            <a href="/payTransaction"
+            <a href="/new-deposit"
                class="btn btn-primary btn-sm mb-3">
                 New Deposit
+            </a>
+            <a href="/changeDepositState"
+               class="btn btn-primary btn-sm mb-3">
+                Change State
+            </a>
+            <a href="/card-request"
+               class="btn btn-primary btn-sm mb-3">
+                Card Request
             </a>
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">

@@ -49,7 +49,6 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/customers">Customers</a></li>
                     <li><a href="/deposits">Deposits</a></li>
-                    <li><a href="/card-request">Card Request</a></li>
                     <li><a href="/transactions">Transactions</a></li>
                 </ul>
             </div>
@@ -78,6 +77,15 @@
                     <label for="address">Address:</label>
                     <input type="text" class="form-control"  name="address" id="address" placeholder="Enter address" required>
                 </div>
+
+                <div class="form-group">
+                <label for="state">State:</label>
+                <select class="form-control" id="state" name="state">
+                    <option value="1">Normal</option>
+                    <option value="2">Block</option>
+                </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Register</button>
         </form:form>
         </div>
