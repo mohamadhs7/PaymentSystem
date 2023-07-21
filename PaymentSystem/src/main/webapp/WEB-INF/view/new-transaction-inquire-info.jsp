@@ -163,10 +163,6 @@
                                            class="btn btn-primary btn-sm mb-3">
                                             Pay
                                         </a>
-                                        <input type="hidden" name="customerNumber" value="<%=transactionVO.getCustomerNumber()%>">
-                                        <input type="hidden" name="identifier" value="<%=transactionVO.getIdentifier()%>">
-                                        <input type="hidden" name="destIBAN" value="<%=transactionVO.getDestIBAN()%>">
-                                        <input type="hidden" name="debitType" value="<%=transactionVO.getDebitType()%>">
                                     </td>
                                 </tr>
                                 </tbody>

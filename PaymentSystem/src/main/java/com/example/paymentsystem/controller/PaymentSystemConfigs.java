@@ -7,8 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class PaymentSystemConfigs {
+    private static String volumeLimitation = "0";
 
-    @Value("${volumeLimitation}")
-    private String volumeLimitation;
+    public void setVolumeLimitation(String newVolume) {
+        volumeLimitation = newVolume;
+    }
+
+    public String getVolumeLimitation() {
+        return volumeLimitation;
+    }
 
 }

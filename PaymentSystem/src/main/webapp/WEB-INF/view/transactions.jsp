@@ -70,6 +70,9 @@
             <a href="/new-transaction" class="btn btn-primary btn-sm mb-3">
                 New Transaction
             </a>
+            <a href="/changeVolumeLimitation" class="btn btn-primary btn-sm mb-3">
+                Volume Limitation
+            </a>
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                 <tr>

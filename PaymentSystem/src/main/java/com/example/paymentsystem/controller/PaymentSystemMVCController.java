@@ -43,6 +43,9 @@ public class PaymentSystemMVCController {
     @Autowired
     PerformTransactionServices transactionServices;
 
+    @Autowired
+    PaymentSystemConfigs systemConfigs;
+
     private TransactionVO transaction;
 
     @GetMapping("customers")
@@ -202,6 +205,24 @@ public class PaymentSystemMVCController {
         List<DepositVO> depositVOList = depositRepo.findAllInVO();
         modelAndView.addObject("deposits", depositVOList);
         modelAndView.setViewName("deposits.jsp");
+        return modelAndView;
+    }
+
+    @GetMapping("changeVolumeLimitation")
+    public ModelAndView changeVolumeLimitation() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("updateVolume", new UpdateVolumeLimitation());
+        modelAndView.addObject("volumeLimitation", systemConfigs.getVolumeLimitation());
+        modelAndView.setViewName("change-volume-limitation.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping("doChangeVolumeLimitation")
+    public ModelAndView doChangeVolumeLimitation(@ModelAttribute("updateVolume") UpdateVolumeLimitation updateVolumeLimitation) {
+        systemConfigs.setVolumeLimitation(updateVolumeLimitation.getNewVolume());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("volumeLimitation", systemConfigs.getVolumeLimitation());
+        modelAndView.setViewName("change-volume-limitation.jsp");
         return modelAndView;
     }
 }
